@@ -5,8 +5,7 @@ import os
 URLS = {
     "London Tourism": "https://schengenappointments.com/in/london/tourism",
     "London Business": "https://schengenappointments.com/in/london/switzerland/business",
-    "Manchester Business": "https://schengenappointments.com/in/manchester/switzerland/business",
-    "Edinburgh Business": "https://schengenappointments.com/in/edinburgh/switzerland/business"
+    "Manchester Business": "https://schengenappointments.com/in/manchester/switzerland/business"
 }
 
 POSITIVE_STATES = [
