@@ -8,7 +8,6 @@ URLS = {
     "Edinburgh Business": "https://schengenappointments.com/in/edinburgh/switzerland/business"
 }
 
-# Any of these means "slot available"
 POSITIVE_STATES = [
     "available",
     "slots",
@@ -23,27 +22,27 @@ def check(url):
     soup = BeautifulSoup(r.text, "html.parser")
     text = soup.get_text().lower()
 
-    # Ignore "notify me"
     if "notify me" in text:
         return False
 
-    # Match any positive state
     return any(state in text for state in POSITIVE_STATES)
 
 found = False
-found_centre = ""
-found_url = ""
+centre = ""
+url = ""
 
-for centre, url in URLS.items():
-    if check(url):
+for c, u in URLS.items():
+    if check(u):
         found = True
-        found_centre = centre
-        found_url = url
+        centre = c
+        url = u
         break
 
-if found:
-    print("::set-output name=slot::yes")
-    print(f"::set-output name=centre::{found_centre}")
-    print(f"::set-output name=url::{found_url}")
-else:
-    print("::set-output name=slot::no")
+# NEW GitHub Actions output format
+with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+    if found:
+        f.write(f"slot=yes\n")
+        f.write(f"centre={centre}\n")
+        f.write(f"url={url}\n")
+    else:
+        f.write("slot=no\n")
