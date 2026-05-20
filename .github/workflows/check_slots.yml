@@ -1,4 +1,4 @@
-name: Check Switzerland Slots (All Centres + All States)
+name: Check Switzerland Slots (All Centres)
 
 on:
   schedule:
@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.10"
 
@@ -25,16 +25,9 @@ jobs:
       id: checker
       run: python check_slots.py
 
-    - name: Create GitHub Issue if slot found
+    - name: Create issue if slot found
       if: steps.checker.outputs.slot == 'yes'
-      uses: peter-evans/create-issue@v5
+      uses: peter-evans/create-issue-from-file@v4
       with:
         title: "🎉 Switzerland Visa Slot AVAILABLE!"
-        body: |
-          A Switzerland visa slot is available.
-    
-          **Centre:** ${{ steps.checker.outputs.centre }}
-          **URL:** ${{ steps.checker.outputs.url }}
-    
-          Go book immediately.
-
+        content-filepath: "./slot.md"
