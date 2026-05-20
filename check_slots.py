@@ -8,26 +8,22 @@ URLS = {
     "Manchester Business": "https://schengenappointments.com/in/manchester/switzerland/business"
 }
 
-POSITIVE_STATES = [
-    "available",
-    "slots",
-    "waiting list",
-    "open",
-    "few",
-    "limited"
-]
-
 def check(url):
     r = requests.get(url, timeout=10)
     soup = BeautifulSoup(r.text, "html.parser")
     text = soup.get_text().lower()
 
-    # Ignore "notify me"
+    # NEGATIVE STATE → no slot
+    if "no appointments available" in text:
+        return False
+
+    # NEGATIVE STATE → no slot
     if "notify me" in text:
         return False
 
-    # Match any positive state
-    return any(state in text for state in POSITIVE_STATES)
+    # ANYTHING ELSE → slot exists
+    return True
+
 
 found = False
 centre = ""
@@ -40,7 +36,7 @@ for c, u in URLS.items():
         url = u
         break
 
-# Write outputs using new GitHub Actions format
+# Write outputs for GitHub Actions
 with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
     if found:
         f.write(f"slot=yes\n")
