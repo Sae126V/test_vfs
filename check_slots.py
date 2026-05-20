@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import os
 
 URLS = {
     "London Tourism": "https://schengenappointments.com/in/london/tourism",
@@ -22,9 +23,11 @@ def check(url):
     soup = BeautifulSoup(r.text, "html.parser")
     text = soup.get_text().lower()
 
+    # Ignore "notify me"
     if "notify me" in text:
         return False
 
+    # Match any positive state
     return any(state in text for state in POSITIVE_STATES)
 
 found = False
@@ -38,7 +41,7 @@ for c, u in URLS.items():
         url = u
         break
 
-# NEW GitHub Actions output format
+# Write outputs using new GitHub Actions format
 with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
     if found:
         f.write(f"slot=yes\n")
