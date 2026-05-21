@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import os
 
+#     "Manchester Business": "https://schengenappointments.com/in/manchester/switzerland/business"
 URLS = {
     "London Tourism": "https://schengenappointments.com/in/london/tourism",
-    "London Business": "https://schengenappointments.com/in/london/switzerland/business",
-    "Manchester Business": "https://schengenappointments.com/in/manchester/switzerland/business"
+    "London Business": "https://schengenappointments.com/in/london/switzerland/business"
 }
 
 def check(url):
